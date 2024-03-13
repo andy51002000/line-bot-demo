@@ -42,9 +42,28 @@ app.get('/health', (req, res) => {
   res.send('Server is up and running!');
 });
 
+// Get user
+app.get('/user', async (req, res) => {
+    
+  // Querying messages by userId
+  // Get userId from query string
+  const userId = req.query.userId;
+
+   if (!userId) {
+      return res.status(400).send('User ID is missing');
+  }
+  const messages = await Message.queryByUserId(userId);
+    
+  console.log('Messages for userId:', userId);
+  console.log(messages);
+    
+    
+
+  res.send(messages);
+});
 
 
-// We gonna have this /send API to reply message to line channel
+
 // POST route to handle messages from the LINE webhook
 app.post('/send', async (req, res) => {
     
